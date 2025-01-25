@@ -5,11 +5,42 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["clientExtensions"]
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model users {
+  id         Int      @id @default(autoincrement())
+  username   String
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  profiles user_profile[] @relation("user_userprofiles") // One-to-many relation to userprofile
+  brands   brand[]        @relation("user_brands") // One-to-many relation to brand
+}
+
+model user_profile {
+  id             Int    @id @default(autoincrement())
+  user_id        Int
+  full_name      String
+  address        String
+  contact_number String
+
+  user users @relation("user_userprofiles", fields: [user_id], references: [id])
+}
+
+model brand {
+  id         Int      @id @default(autoincrement())
+  user_id    Int      @unique
+  brand_name String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user users @relation("user_brands", fields: [user_id], references: [id])
 }
