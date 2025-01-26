@@ -1,4 +1,4 @@
-export class CreateXgameDto {
+export class CreateUserDto {
     username: string;
     password: string;
 
@@ -8,5 +8,4 @@ export class CreateXgameDto {
 
     user_id: number;
     brand_name: string;
-
 }

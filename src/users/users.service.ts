@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateXgameDto } from './dto/create-xgame.dto';
-import { UpdateXgameDto } from './dto/update-xgame.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class XgameService {
+export class UsersService {
   prisma = new PrismaClient();
-  async create(createXgameDto: CreateXgameDto) {
+  async create(createUserDto: CreateUserDto) {
     return await this.prisma.users.create({
       data: {
-        username: createXgameDto.username,
-        password: createXgameDto.password,
+        username: createUserDto.username,
+        password: createUserDto.password,
         profiles: {
           create: {
-            full_name: createXgameDto.full_name,
-            address: createXgameDto.address,
-            contact_number: createXgameDto.contact_number, 
+            full_name: createUserDto.full_name,
+            address: createUserDto.address,
+            contact_number: createUserDto.contact_number, 
           }
         },
         brands: {
           create: {
-            brand_name: createXgameDto.brand_name,
+            brand_name: createUserDto.brand_name,
           }
         }
       },
@@ -30,8 +30,6 @@ export class XgameService {
       }
     });
   }
-  
-  
 
   async findAll() {
     return await this.prisma.users.findMany({
@@ -49,7 +47,6 @@ export class XgameService {
       }
     });
   }
-  
 
   async findOne(id: number) {
     return await this.prisma.users.findUnique({
@@ -67,14 +64,13 @@ export class XgameService {
       },
     });
   }
-  
 
-  async update(id: number, updateXgameDto: UpdateXgameDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     await this.prisma.users.update({
       where: { id: id },
       data: {
-        username: updateXgameDto.username,
-        password: updateXgameDto.password,
+        username: updateUserDto.username,
+        password: updateUserDto.password,
       },
     });
   
@@ -92,10 +88,8 @@ export class XgameService {
       },
     });
   }
-  
 
   async remove(id: number) {
-
     await this.prisma.user_profile.deleteMany({
       where: { user_id: id }, 
     });
@@ -108,7 +102,4 @@ export class XgameService {
       where: { id: id },
     });
   }
-  
-  
-  
 }
